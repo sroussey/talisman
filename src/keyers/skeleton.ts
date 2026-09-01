@@ -1,0 +1,70 @@
+/**
+ * Talisman keyers/skeleton
+ * =========================
+ *
+ * Keyer taking a string and normalizing it into a "skeleton key".
+ *
+ * [Reference]:
+ * http://dl.acm.org/citation.cfm?id=358048
+ * http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.12.385&rep=rep1&type=pdf
+ *
+ * [Article]:
+ * Pollock, Joseph J. and Antonio Zamora. 1984. "Automatic Spelling Correction
+ * in Scientific and Scholarly Text." Communications of the ACM, 27(4).
+ * 358--368.
+ */
+import deburr from '../helpers/deburr.js';
+
+/**
+ * Constants.
+ */
+const UNDESIRABLES = /[^A-Z]/g,
+      VOWELS = new Set('AEIOU');
+
+/**
+ * Helpers.
+ */
+function consume(set: Set<string>): string {
+  return Array.from(set).join('');
+}
+
+/**
+ * Skeleton key function.
+ *
+ * @param string - Target string.
+ * @return The skeleton key.
+ */
+export default function skeleton(string: string): string {
+
+  // Deburring
+  string = deburr(string);
+
+  // Normalizing case
+  string = string.toUpperCase();
+
+  // Dropping useless characters
+  string = string.replace(UNDESIRABLES, '');
+
+  // Composing the key
+  const firstLetter = string[0];
+
+  if (!firstLetter)
+    return '';
+
+  const consonants = new Set<string>(),
+        vowels = new Set<string>();
+
+  for (let i = 1, l = string.length; i < l; i++) {
+    const letter = string[i];
+
+    if (letter === firstLetter)
+      continue;
+
+    if (VOWELS.has(letter))
+      vowels.add(letter);
+    else
+      consonants.add(letter);
+  }
+
+  return firstLetter + consume(consonants) + consume(vowels);
+}

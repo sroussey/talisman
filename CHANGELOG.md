@@ -1,5 +1,74 @@
 # Changelog
 
+## 1.0.0
+
+First release of `@sroussey/talisman`, a TypeScript fork of
+[talisman](https://github.com/Yomguithereal/talisman) (last published as
+`talisman@1.1.4`). The version was reset to `1.0.0` for the renamed package.
+
+* The whole library was rewritten in **TypeScript**. Every module now ships
+  type declarations, and the sources typecheck under `strict` mode.
+* The toolchain moved to **Bun**: `bun test` replaces mocha, `bun install`
+  replaces npm and the benchmark runs through `bun run bench` instead of
+  matcha. `tsc` still emits the published JavaScript & declarations.
+* The package is now **ESM only** and exposes its modules through the
+  `exports` map (`@sroussey/talisman/metrics/levenshtein`, ...). Babel and the
+  transpiled folders at the root of the package are gone; the build output
+  lives in `dist`.
+* **`html-entities` is now the only runtime dependency**, down from six.
+  * `long` is gone: the Eudex hash uses native `BigInt`, so
+    **`phonetics/eudex` returns a `bigint` instead of a `Long`** (compare
+    hashes with `===`, not `.equals()`).
+  * `lodash` is gone: `uniq` became a `Set`, `deburr` became the new
+    `helpers/deburr` module built on Unicode's canonical decomposition, and
+    Lodash's `words` was vendored into `tokenizers/words/naive`.
+  * `mnemonist`, `obliterator` and `pandemonium` are gone: the pieces the
+    library used were vendored as `structures/heap`, `structures/vp-tree`,
+    `structures/suffix-array`, `helpers/combinatorics` and `helpers/random`.
+    They are ports rather than copies - typed, documented and covered by their
+    own tests - and each was checked against the package it came from before
+    the dependency was dropped.
+
+  Every vendored module keeps the copyright notice of the MIT-licensed project
+  it comes from, all of which are also authored by Talisman's own author.
+* `citation-js` is no longer a devDependency: it powers `bun run bib`, which
+  regenerates a committed file by hand, and it accounted for 80 of the 96
+  packages a `bun install` used to fetch (now 13). Install it on demand with
+  `bun add -d citation-js`.
+* The new `helpers/deburr` matches Lodash exactly across Latin-1 Supplement
+  and Latin Extended-A, and strips the diacritics of 335 further code points
+  Lodash left untouched - Vietnamese, pinyin and the whole Latin Extended
+  Additional block. `deburr('Nguyễn')` is now `'Nguyen'` rather than
+  `'Nguyễn'`. The decomposition is an implementation detail: the result is
+  recomposed to NFC, so a script it has nothing to drop from - Hangul, Arabic,
+  Devanagari - comes back composed rather than left in NFD. Unicode's
+  composition exclusions are the exception: the Devanagari nukta letters
+  `U+0958-U+095F` and their Bengali kin stay decomposed, as NFC requires.
+
+### Bug fixes surfaced by the type checker
+
+* `phonetics/double-metaphone`: three misplaced parentheses/typos made a
+  `substr` call swallow the operator it was meant to be compared with. The
+  `GET`, `-ALL-` and `WH-` branches now behave as the reference implementation
+  does. Words starting with `WH` followed by a consonant (`white`, `when`) now
+  emit their initial `A`.
+* `stemmers/uea-lite`: rule `11.2` was numbered with a number instead of a
+  string, and a `/vings$/` rule that the preceding `/vings?$/` rule always
+  shadowed was removed.
+* `tokenizers/sentences/punkt`: `FrequencyDistribution#add` never returned the
+  distribution its documentation promised; it is now documented as returning
+  nothing.
+
+### Other bug fixes
+
+* `phonetics/eudex`: the encoding loop advanced its cursor at the bottom of
+  the body, after a `continue` that skipped it, so any character the algorithm
+  has no phone for made it spin forever. `eudex('a{')` never returned; nor did
+  any input containing `{`, `|`, `}`, `~` or a character in the `U+0080-U+00DB`
+  range past the first one. The cursor now advances before the `continue`.
+  Every input that used to terminate hashes exactly as before (verified over
+  500 words and 14,565 distance pairs against the previous implementation).
+
 ## 1.1.4
 
 * Fixing `phonetics/nysiis`.
