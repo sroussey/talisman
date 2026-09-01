@@ -86,10 +86,16 @@ export function createGeometricReservoirSample(
     // NOTE: from this point, formulae consider i to be 1-based
     let w = Math.exp(Math.log(rng()) / k);
 
-    if (i > n)
-      return sample;
-
     for (;;) {
+
+      // A generator returning exactly 0 collapses w, and so does one fine
+      // enough that `1 - w` rounds back to 1. `Math.log(1)` being 0, the step
+      // below would then be -Infinity: the cursor would run backwards instead
+      // of reaching the end of the sequence, and `sequence[i - 1]` would write
+      // `undefined` into the sample. What we hold is already a valid sample.
+      if (!(w > 0) || 1 - w === 1)
+        break;
+
       i += Math.floor(Math.log(rng()) / Math.log(1 - w)) + 1;
 
       if (i > n)

@@ -39,7 +39,11 @@ First release of `@sroussey/talisman`, a TypeScript fork of
   and Latin Extended-A, and strips the diacritics of 335 further code points
   Lodash left untouched - Vietnamese, pinyin and the whole Latin Extended
   Additional block. `deburr('Nguyễn')` is now `'Nguyen'` rather than
-  `'Nguyễn'`.
+  `'Nguyễn'`. The decomposition is an implementation detail: the result is
+  recomposed to NFC, so a script it has nothing to drop from - Hangul, Arabic,
+  Devanagari - comes back composed rather than left in NFD. Unicode's
+  composition exclusions are the exception: the Devanagari nukta letters
+  `U+0958-U+095F` and their Bengali kin stay decomposed, as NFC requires.
 
 ### Bug fixes surfaced by the type checker
 

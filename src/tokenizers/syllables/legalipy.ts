@@ -252,7 +252,6 @@ export class LegalipyTokenizer {
    * tokenizer.
    *
    * @param model - The model to import.
-   * @return Returns itself for chaining.
    */
   import(model: LegalipyModel): void {
     this.finalize();

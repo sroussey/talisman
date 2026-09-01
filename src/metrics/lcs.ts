@@ -39,5 +39,5 @@ export function similarity<T extends string | string[]>(a: T, b: T): number {
  * @return Distance between 0 & 1.
  */
 export function distance<T extends string | string[]>(a: T, b: T): number {
-  return 1 - similarity(a as string, b as string);
+  return 1 - similarity(a, b);
 }

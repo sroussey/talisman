@@ -14,21 +14,19 @@
  * [Tags]: metric, string metric.
  */
 import eudex from '../phonetics/eudex.js';
+import {bitwise} from './hamming.js';
 
 /**
  * Helpers.
  */
-// NOTE: this is somewhat hacky and some methods can retrieve this information
-// in constant time rather than our linear time here.
-function bits(value: bigint): number {
-  let count = 0;
-
-  while (value) {
-    count += Number(value & 1n);
-    value >>= 1n;
-  }
-
-  return count;
+// NOTE: the Hamming distance to zero is the population count, and
+// `metrics/hamming#bitwise` already clears the lowest set bit at each turn
+// rather than walking every bit position. The bytes below are extracted from
+// the hash as numbers so that it runs on a machine word: iterating a bigint
+// one bit at a time is both slower and non-terminating on a negative value,
+// since `-1n >> 1n` is `-1n`.
+function bits(value: number): number {
+  return bitwise(value, 0);
 }
 
 /**
@@ -39,23 +37,14 @@ function bits(value: bigint): number {
  * @return The distance.
  */
 export function distance(a: string, b: string): number {
-  const d = eudex(a) ^ eudex(b);
-
-  let sum = bits(d & 0xFFn);
+  let d = eudex(a) ^ eudex(b),
+      sum = 0;
 
   // The further a difference sits from the first byte, the more it weighs
-  const toAdd = [
-    bits((d >> 8n) & 0xFFn) * 2,
-    bits((d >> 16n) & 0xFFn) * 4,
-    bits((d >> 24n) & 0xFFn) * 8,
-    bits((d >> 32n) & 0xFFn) * 16,
-    bits((d >> 40n) & 0xFFn) * 32,
-    bits((d >> 48n) & 0xFFn) * 64,
-    bits((d >> 56n) & 0xFFn) * 128
-  ];
-
-  for (let i = 0, l = toAdd.length; i < l; i++)
-    sum += toAdd[i];
+  for (let weight = 1; weight <= 128; weight *= 2) {
+    sum += bits(Number(d & 0xFFn)) * weight;
+    d >>= 8n;
+  }
 
   return sum;
 }

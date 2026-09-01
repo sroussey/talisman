@@ -44,7 +44,7 @@ export function sameMembers<T>(
   assert.strictEqual(
     actual.length,
     expected.length,
-    message || `expected ${actual.length} members, got ${expected.length}`
+    message || `expected ${expected.length} members, got ${actual.length}`
   );
 
   const remaining = expected.slice();

@@ -122,5 +122,5 @@ export function similarity<T extends StringSequence>(a: T, b: T): number {
  * @return The Ratcliff-Obershelp distance between a & b.
  */
 export function distance<T extends StringSequence>(a: T, b: T): number {
-  return 1 - similarity(a as string, b as string);
+  return 1 - similarity(a, b);
 }

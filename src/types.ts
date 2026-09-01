@@ -22,9 +22,11 @@ export type Vector = ArrayLike<number>;
 export type Comparator<T = string> = (a: T, b: T) => number;
 
 /**
- * A function returning the distance between two items.
+ * A function returning the distance between two items. Same shape as
+ * {@link Comparator}, named for the clustering & tree structures that ask for
+ * a distance specifically.
  */
-export type DistanceFunction<T> = (a: T, b: T) => number;
+export type DistanceFunction<T> = Comparator<T>;
 
 /**
  * A dictionary of frequencies, keyed by the string representation of the

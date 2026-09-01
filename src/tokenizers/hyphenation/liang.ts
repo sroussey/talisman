@@ -456,28 +456,31 @@ z2z3w
 
 const TREE: PatternNode = {};
 
-// Compiling the patterns
-const COMPILED_PATTERNS = PATTERNS
-  .trim()
-  .replace(/\n/g, ' ')
-  .split(' ');
+// Building the tree. The compiled list of patterns is scoped to this block so
+// that it is released once the tree is built - it is the larger of the two
+// representations, and only the tree is ever read afterwards.
+{
+  const compiledPatterns = PATTERNS
+    .trim()
+    .replace(/\n/g, ' ')
+    .split(' ');
 
-// Building the tree
-for (let i = 0, l = COMPILED_PATTERNS.length; i < l; i++) {
-  const pattern = COMPILED_PATTERNS[i],
-        characters = pattern.replace(/\d/g, ''),
-        points = pattern.split(/[.a-z]/).map(d => +d || 0);
+  for (let i = 0, l = compiledPatterns.length; i < l; i++) {
+    const pattern = compiledPatterns[i],
+          characters = pattern.replace(/\d/g, ''),
+          points = pattern.split(/[.a-z]/).map(d => +d || 0);
 
-  let branch: PatternNode = TREE;
+    let branch: PatternNode = TREE;
 
-  for (let c = 0, m = characters.length; c < m; c++) {
-    const character = characters[c];
+    for (let c = 0, m = characters.length; c < m; c++) {
+      const character = characters[c];
 
-    if (!(character in branch))
-      branch[character] = {};
-    branch = branch[character] as PatternNode;
+      if (!(character in branch))
+        branch[character] = {};
+      branch = branch[character] as PatternNode;
+    }
+    branch.points = points;
   }
-  branch.points = points;
 }
 
 // Cleaning up patterns from memory

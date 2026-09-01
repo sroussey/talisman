@@ -45,6 +45,14 @@ const COMBINING_MARKS = /[̀-ͯ⃐-⃿︠-︯]/g;
 /**
  * Function deburring the given string.
  *
+ * The result is recomposed to NFC: the decomposition above is a means of
+ * reaching the diacritics, not something the caller asked for, and leaving a
+ * script the function has nothing to drop from - Hangul, Arabic, Devanagari -
+ * in NFD would return a visually identical string that no longer compares
+ * equal to its input. NFC is not the input's own form, though: a character
+ * Unicode excludes from composition, such as the Devanagari nukta letters
+ * U+0958-U+095F, still comes back decomposed.
+ *
  * @param  string - The string to deburr.
  * @return The deburred string.
  *
@@ -56,5 +64,6 @@ export default function deburr(string: string): string {
   return string
     .normalize('NFD')
     .replace(COMBINING_MARKS, '')
-    .replace(LIGATURES_REGEX, character => LIGATURES[character]);
+    .replace(LIGATURES_REGEX, character => LIGATURES[character])
+    .normalize('NFC');
 }

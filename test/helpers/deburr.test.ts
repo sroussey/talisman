@@ -43,6 +43,18 @@ describe('deburr', function() {
     });
   });
 
+  // The decomposition is a means of reaching the diacritics. Every assertion
+  // above passes on a NFD result too, so only a script with nothing to drop
+  // can catch the recomposition going missing.
+  it('should return a script it has nothing to drop from composed.', function() {
+    const tests = ['\ud55c\uad6d\uc5b4', '\u0622\u062f\u0645', '\u05e9\u05b8\u05dc\u05d5\u05b9\u05dd'];
+
+    tests.forEach(function(string) {
+      assert.strictEqual(deburr(string), string, string);
+      assert.strictEqual(deburr(string.normalize('NFD')), string, string);
+    });
+  });
+
   it('should handle the letters beyond latin extended-A.', function() {
     const tests: [string, string][] = [
       ['Nguyễn', 'Nguyen'],

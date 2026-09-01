@@ -5,6 +5,9 @@
  * Abstract class used by every record-linkage clusterer to expose a same
  * interface.
  */
+import type {DistanceFunction} from '../types.js';
+
+export type {DistanceFunction};
 
 /**
  * Defaults.
@@ -12,18 +15,6 @@
 const DEFAULTS = {
   minClusterSize: 2
 };
-
-/**
- * Record Linkage Clusterer class.
- *
- * @constructor
- * @param params - Clusterer parameters.
- * @param items - Items to cluster.
- */
-/**
- * A function returning the distance between two items.
- */
-export type DistanceFunction<T> = (a: T, b: T) => number;
 
 /**
  * A predicate telling whether two items should be clustered together.
@@ -61,6 +52,13 @@ export interface ClustererSettings {
   tight?: number;
 }
 
+/**
+ * Record Linkage Clusterer class.
+ *
+ * @constructor
+ * @param params - Clusterer parameters.
+ * @param items - Items to cluster.
+ */
 export default class RecordLinkageClusterer<T = unknown> {
   /** The items to cluster. */
   readonly items: T[];

@@ -113,5 +113,39 @@ describe('random', function() {
       for (let k = 1; k < 10; k++)
         assert.deepEqual(a(k, array), b(k, array));
     });
+
+    // The sample is only correct if it draws from the generator the same
+    // number of times, in the same order, as the algorithm prescribes. Pinning
+    // the output for a fixed seed is what catches a change to that sequence:
+    // every other assertion here would still pass.
+    it('should draw the same sample for a given seed.', function() {
+      const sample = createGeometricReservoirSample(createTestRng(11));
+
+      assert.deepEqual(sample(3, array), ['n', 'e', 'g']);
+      assert.deepEqual(sample(5, array), ['m', 'y', 'c', 'z', 'e']);
+      assert.deepEqual(sample(8, array), ['i', 'l', 'c', 'd', 'o', 'f', 'u', 'h']);
+    });
+
+    it('should not hang on a generator that returns zero.', function() {
+      const sample = createGeometricReservoirSample(() => 0),
+            result = sample(4, array);
+
+      assert.deepEqual(result, ['a', 'b', 'c', 'd']);
+    });
+
+    // Nothing bounds the resolution of the given generator, and one finer than
+    // `Math.random`'s collapses `1 - w` back to 1, whose logarithm is 0. The
+    // resulting step is -Infinity, which walks the cursor off the front of the
+    // sequence rather than past its end.
+    it('should not sample undefined on a fine-grained generator.', function() {
+      const sample = createGeometricReservoirSample(() => 1e-20);
+
+      for (let k = 1; k < 5; k++) {
+        const result = sample(k, array);
+
+        assert.strictEqual(result.length, k);
+        result.forEach(item => assert(array.includes(item), String(item)));
+      }
+    });
   });
 });
