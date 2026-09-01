@@ -14,7 +14,7 @@
  * US National Institute of Standards and Technology. p. 17. NIST SP - 500-2.
  */
 import {squeeze} from '../helpers/index.js';
-import deburr from 'lodash/deburr.js';
+import deburr from '../helpers/deburr.js';
 
 /**
  * Function taking a single name and computing its MRA codex.

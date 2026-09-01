@@ -8,7 +8,7 @@
  * http://www-info.univ-lemans.fr/~carlier/recherche/soundex.html
  * http://sqlpro.developpez.com/cours/soundex/
  */
-import deburr from 'lodash/deburr.js';
+import deburr from '../../helpers/deburr.js';
 import {translation, squeeze} from '../../helpers/index.js';
 
 /**

@@ -8,7 +8,7 @@
  * https://en.wikipedia.org/wiki/New_York_State_Identification_and_Intelligence_System
  */
 import {squeeze} from '../helpers/index.js';
-import deburr from 'lodash/deburr.js';
+import deburr from '../helpers/deburr.js';
 
 /**
  * Patterns.

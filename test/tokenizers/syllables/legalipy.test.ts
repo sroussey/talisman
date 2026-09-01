@@ -6,7 +6,7 @@
 import {describe, it} from 'bun:test';
 import assert from 'node:assert';
 import {sameMembers} from '../../utils.js';
-import words from 'lodash/words.js';
+import words from '../../../src/tokenizers/words/naive.js';
 import defaultTokenizer, {
   LegalipyTokenizer
 } from '../../../src/tokenizers/syllables/legalipy.js';

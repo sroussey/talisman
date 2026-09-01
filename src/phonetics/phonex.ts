@@ -10,7 +10,7 @@
  * [Article]:
  * Lait, A. J. and B. Randell. "An Assessment of Name Matching Algorithms".
  */
-import deburr from 'lodash/deburr.js';
+import deburr from '../helpers/deburr.js';
 
 /**
  * Constants.

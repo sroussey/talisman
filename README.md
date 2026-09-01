@@ -52,6 +52,7 @@ An extensive bibliography of the methods & functions implemented by the library 
 * :zap: **Performant**: the library should be as performant as possible for a high-level programming language library.
 * :globe_with_meridians: **Cross-platform**: the library is cross-platform and can be used both with Node.js and in the browser.
 * :triangular_ruler: **Typed**: written in TypeScript, checked under `strict` mode, with declarations shipped for every module.
+* :feather: **Light**: four small runtime dependencies (`html-entities`, `mnemonist`, `obliterator`, `pandemonium`).
 
 ## How to cite
 
@@ -85,6 +86,9 @@ bun run build
 
 # Benchmarking levenshtein against `leven`
 bun run bench
+
+# Regenerating BIBLIOGRAPHY.md (needs an on-demand dependency)
+bun add -d citation-js && bun run bib
 ```
 
 ## License

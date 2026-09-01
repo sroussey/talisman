@@ -26,7 +26,7 @@ describe('eudex', function() {
     ];
 
     identicalHashes.forEach(function([one, two]) {
-      assert(eudex(one).equals(eudex(two)), `${one} = ${two}`);
+      assert.strictEqual(eudex(one), eudex(two), `${one} = ${two}`);
     });
 
     const differentHashes = [
@@ -43,7 +43,17 @@ describe('eudex', function() {
     ];
 
     differentHashes.forEach(function([one, two]) {
-      assert(!eudex(one).equals(eudex(two)), `${one} != ${two}`);
+      assert.notStrictEqual(eudex(one), eudex(two), `${one} != ${two}`);
+    });
+  });
+
+  it('should terminate on characters it has no phone for.', function() {
+
+    // NOTE: these used to spin the encoding loop forever
+    const tricky = ['a{', 'a|b', 'comp}uter', 'a~b', 'a\u00a0b', 'pri\u00a3ce', '10\u00b0C'];
+
+    tricky.forEach(function(word) {
+      assert.strictEqual(typeof eudex(word), 'bigint', word);
     });
   });
 });

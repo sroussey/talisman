@@ -16,7 +16,7 @@
  * David Hood (Caversham project)
  * http://caversham.otago.ac.nz/
  */
-import deburr from 'lodash/deburr.js';
+import deburr from '../helpers/deburr.js';
 
 /**
  * Rules.

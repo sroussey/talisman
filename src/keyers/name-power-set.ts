@@ -7,7 +7,6 @@
  * partial names such as "P. Henry" & "Philip Henry", for instance.
  */
 import {powerSet} from 'obliterator';
-import uniq from 'lodash/uniq.js';
 import words from '../tokenizers/words/index.js';
 
 // TODO: option for full initials? (else if solution involves only abbrev, we skip)
@@ -85,7 +84,7 @@ export default function namePowerSet(name: string | string[]): string[][] {
   const tokenized = typeof name === 'string' ? words(name) : name;
 
   // Gathering items which are the sorted unique tokens of the name
-  const tokens = uniq(tokenized).sort();
+  const tokens = [...new Set(tokenized)].sort();
 
   if (tokens.length < 2)
     return [tokens];

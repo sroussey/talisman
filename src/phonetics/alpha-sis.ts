@@ -13,7 +13,7 @@
  * Computer Sciences and Technology, National Bureau of Standards,
  * Washington, D.C (1977)
  */
-import deburr from 'lodash/deburr.js';
+import deburr from '../helpers/deburr.js';
 import {squeeze} from '../helpers/index.js';
 
 /**

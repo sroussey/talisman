@@ -11,7 +11,7 @@
  * Holmes, David and M. Catherine McCabe. "Improving Precision and Recall for
  * Soundex Retrieval."
  */
-import deburr from 'lodash/deburr.js';
+import deburr from '../helpers/deburr.js';
 import {squeeze, translation} from '../helpers/index.js';
 
 /**

@@ -11,7 +11,10 @@
  * @ticki (https://github.com/ticki)
  */
 
-import Long from 'long';
+/**
+ * Mask keeping a value within the 64 bits of the hash.
+ */
+const MASK = (1n << 64n) - 1n;
 
 /**
  * Maps.
@@ -188,7 +191,7 @@ const INJECTIVE_PHONES_C1 = [
 const A = charCode('a'),
       Z = charCode('z');
 
-export default function eudex(word: string): Long {
+export default function eudex(word: string): bigint {
   const array = charArray(word);
 
   let entry = array.length > 0 ?
@@ -202,34 +205,38 @@ export default function eudex(word: string): Long {
   else if (entry >= 0xDF && entry < 0xFF)
     firstByteValue = INJECTIVE_PHONES_C1[entry - 0xDF];
 
-  const firstByte = new Long(firstByteValue);
+  const firstByte = BigInt(firstByteValue);
 
-  let res = Long.UZERO,
-      n = 0,
+  let res = 0n;
+
+  let n = 0,
       b = 1;
 
   while (n < 8 && b < array.length) {
     entry = ((array[b] | 32) - A) & 0xFF;
 
-    if (entry <= Z) {
-      let x: number;
-
-      if (entry < LETTERS)
-        x = PHONES[entry];
-      else if (entry >= 0xDF && entry < 0xFF)
-        x = PHONES_C1[entry - 0xDF];
-      else
-        continue;
-
-      if (!res.and(0xFE).equals(x & 0xFE)) {
-        res = res.shiftLeft(8);
-        res = res.or(x);
-        n++;
-      }
-    }
-
+    // NOTE: the cursor must advance before any `continue`, else a letter we
+    // have no phone for spins the loop forever.
     b++;
+
+    if (entry > Z)
+      continue;
+
+    let x: number;
+
+    if (entry < LETTERS)
+      x = PHONES[entry];
+    else if (entry >= 0xDF && entry < 0xFF)
+      x = PHONES_C1[entry - 0xDF];
+    else
+      continue;
+
+    if ((res & 0xFEn) !== BigInt(x & 0xFE)) {
+      res = (res << 8n) & MASK;
+      res = res | BigInt(x);
+      n++;
+    }
   }
 
-  return res.or(firstByte.shiftLeft(56));
+  return (res | (firstByte << 56n)) & MASK;
 }

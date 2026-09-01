@@ -10,7 +10,7 @@
  * Shahidul Islam Khan, Abu Sayed Md. Latiful Hoque.
  * December 17, 2016
  */
-import deburr from 'lodash/deburr.js';
+import deburr from '../helpers/deburr.js';
 
 /**
  * Constants.

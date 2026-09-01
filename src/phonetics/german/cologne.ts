@@ -13,7 +13,7 @@
  * in: IBM-Nachrichten, 19. Jahrgang, 1969, S. 925-931.
  */
 import {squeeze} from '../../helpers/index.js';
-import deburr from 'lodash/deburr.js';
+import deburr from '../../helpers/deburr.js';
 
 /**
  * Maps.

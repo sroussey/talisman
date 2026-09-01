@@ -15,7 +15,7 @@
  * Extraction automatique des diagnostics à partir des comptes rendus médicaux
  * textuels. Didier Nakache, 2007.
  */
-import deburr from 'lodash/deburr.js';
+import deburr from '../../helpers/deburr.js';
 import {squeeze} from '../../helpers/index.js';
 
 /**

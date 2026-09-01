@@ -10,7 +10,7 @@
  * [Author]:
  * Lawrence Philips, 1990
  */
-import deburr from 'lodash/deburr.js';
+import deburr from '../helpers/deburr.js';
 
 /**
  * Series of rules to apply.

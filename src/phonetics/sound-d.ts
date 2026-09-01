@@ -9,7 +9,7 @@
  * Cihan Varol, Coskun Bayrak.
  */
 import {translation, squeeze} from '../helpers/index.js';
-import deburr from 'lodash/deburr.js';
+import deburr from '../helpers/deburr.js';
 
 /**
  * Translations.

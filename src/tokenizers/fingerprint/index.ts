@@ -6,8 +6,7 @@
  * given string which can later be used for similarity measures.
  */
 
-import deburr from 'lodash/deburr.js';
-import uniq from 'lodash/uniq.js';
+import deburr from '../../helpers/deburr.js';
 import ngrams from '../ngrams/index.js';
 import {escapeRegexp} from '../../regexp/index.js';
 
@@ -143,7 +142,7 @@ export function createTokenizer(options?: FingerprintTokenizerOptions | null): F
       tokens = ngrams(n as number, string.replace(WHITESPACE, ''));
 
     //-- Keeping only unique tokens
-    tokens = uniq(tokens);
+    tokens = [...new Set(tokens)];
 
     //-- Sorting tokens
     if (!dontSort)

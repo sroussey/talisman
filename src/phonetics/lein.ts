@@ -7,7 +7,7 @@
  * [Reference]:
  * http://naldc.nal.usda.gov/download/27833/PDF
  */
-import deburr from 'lodash/deburr.js';
+import deburr from '../helpers/deburr.js';
 import {squeeze, translation} from '../helpers/index.js';
 
 /**

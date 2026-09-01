@@ -124,18 +124,13 @@
   "homepage": "https://github.com/sroussey/talisman#readme",
   "dependencies": {
     "html-entities": "^2.6.0",
-    "lodash": "^4.17.21",
-    "long": "^5.3.2",
     "mnemonist": "^0.40.4",
     "obliterator": "^2.0.5",
     "pandemonium": "^2.4.1"
   },
   "devDependencies": {
     "@types/bun": "^1.4.0",
-    "@types/lodash": "^4.17.20",
-    "@types/node": "^24.0.0",
     "@types/seedrandom": "^3.0.8",
-    "citation-js": "^0.8.2",
     "leven": "^4.1.0",
     "seedrandom": "^3.0.5",
     "typescript": "^5.9.3"

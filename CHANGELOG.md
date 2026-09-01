@@ -15,8 +15,23 @@ First release of `@sroussey/talisman`, a TypeScript fork of
   `exports` map (`@sroussey/talisman/metrics/levenshtein`, ...). Babel and the
   transpiled folders at the root of the package are gone; the build output
   lives in `dist`.
-* `html-entities` was upgraded to `v2`, `long` to `v5` and `mnemonist` to
-  `v0.40`.
+* The runtime dependencies went from 6 to 4. `long` is gone: the Eudex hash
+  now uses native `BigInt`, so **`phonetics/eudex` returns a `bigint` instead
+  of a `Long`** (compare hashes with `===`, not `.equals()`). `lodash` is gone
+  too: `uniq` became a `Set`, `deburr` became a new `helpers/deburr` module
+  built on Unicode's canonical decomposition, and Lodash's `words` was
+  vendored into `tokenizers/words/naive` under its MIT licence. What remains
+  is `html-entities` (upgraded to v2), `mnemonist` (v0.40), `obliterator` and
+  `pandemonium`.
+* `citation-js` is no longer a devDependency: it powers `bun run bib`, which
+  regenerates a committed file by hand, and it accounted for 80 of the 96
+  packages a `bun install` used to fetch (now 13). Install it on demand with
+  `bun add -d citation-js`.
+* The new `helpers/deburr` matches Lodash exactly across Latin-1 Supplement
+  and Latin Extended-A, and strips the diacritics of 335 further code points
+  Lodash left untouched - Vietnamese, pinyin and the whole Latin Extended
+  Additional block. `deburr('Nguyễn')` is now `'Nguyen'` rather than
+  `'Nguyễn'`.
 
 ### Bug fixes surfaced by the type checker
 
@@ -31,6 +46,16 @@ First release of `@sroussey/talisman`, a TypeScript fork of
 * `tokenizers/sentences/punkt`: `FrequencyDistribution#add` never returned the
   distribution its documentation promised; it is now documented as returning
   nothing.
+
+### Other bug fixes
+
+* `phonetics/eudex`: the encoding loop advanced its cursor at the bottom of
+  the body, after a `continue` that skipped it, so any character the algorithm
+  has no phone for made it spin forever. `eudex('a{')` never returned; nor did
+  any input containing `{`, `|`, `}`, `~` or a character in the `U+0080-U+00DB`
+  range past the first one. The cursor now advances before the `continue`.
+  Every input that used to terminate hashes exactly as before (verified over
+  500 words and 14,565 distance pairs against the previous implementation).
 
 ## 1.1.4
 

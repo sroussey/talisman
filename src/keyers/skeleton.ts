@@ -13,7 +13,7 @@
  * in Scientific and Scholarly Text." Communications of the ACM, 27(4).
  * 358--368.
  */
-import deburr from 'lodash/deburr.js';
+import deburr from '../helpers/deburr.js';
 
 /**
  * Constants.

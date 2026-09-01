@@ -13,7 +13,7 @@
  * transcription phonétique pour la reconstitution automatique des familles
  * saguenayennes. In: Population, 36ᵉ année, n°6, 1981. pp. 1085-1103;
  */
-import deburr from 'lodash/deburr.js';
+import deburr from '../../helpers/deburr.js';
 
 /**
  * Constants.

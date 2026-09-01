@@ -7,7 +7,7 @@
  * [Reference]:
  * https://en.wikipedia.org/wiki/Daitch%E2%80%93Mokotoff_Soundex
  */
-import deburr from 'lodash/deburr.js';
+import deburr from '../helpers/deburr.js';
 
 /**
  * Rules.

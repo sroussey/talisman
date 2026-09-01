@@ -9,7 +9,7 @@
  * [Reference]:
  * http://www.roudoudou.com/phonetic.php
  */
-import deburr from 'lodash/deburr.js';
+import deburr from '../../helpers/deburr.js';
 
 /**
  * Helpers.

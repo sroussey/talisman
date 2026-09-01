@@ -14,17 +14,21 @@
  * [Tags]: metric, string metric.
  */
 import eudex from '../phonetics/eudex.js';
-import Long from 'long';
 
 /**
  * Helpers.
  */
 // NOTE: this is somewhat hacky and some methods can retrieve this information
-// in constant time rather than our linear time here. However, the massive
-// use of functions from the 'long' library might not be as optimized
-// by JavaScript engines.
-function bits(value: Long): Long {
-  return new Long((value.toString(2).match(/1/g) || []).length);
+// in constant time rather than our linear time here.
+function bits(value: bigint): number {
+  let count = 0;
+
+  while (value) {
+    count += Number(value & 1n);
+    value >>= 1n;
+  }
+
+  return count;
 }
 
 /**
@@ -35,24 +39,25 @@ function bits(value: Long): Long {
  * @return The distance.
  */
 export function distance(a: string, b: string): number {
-  const d = eudex(a).xor(eudex(b));
+  const d = eudex(a) ^ eudex(b);
 
-  let sum = bits(d.and(0xFF));
+  let sum = bits(d & 0xFFn);
 
+  // The further a difference sits from the first byte, the more it weighs
   const toAdd = [
-    bits(d.shiftRight(8).and(0xFF)).mul(2),
-    bits(d.shiftRight(16).and(0xFF)).mul(4),
-    bits(d.shiftRight(24).and(0xFF)).mul(8),
-    bits(d.shiftRight(32).and(0xFF)).mul(16),
-    bits(d.shiftRight(40).and(0xFF)).mul(32),
-    bits(d.shiftRight(48).and(0xFF)).mul(64),
-    bits(d.shiftRight(56).and(0xFF)).mul(128)
+    bits((d >> 8n) & 0xFFn) * 2,
+    bits((d >> 16n) & 0xFFn) * 4,
+    bits((d >> 24n) & 0xFFn) * 8,
+    bits((d >> 32n) & 0xFFn) * 16,
+    bits((d >> 40n) & 0xFFn) * 32,
+    bits((d >> 48n) & 0xFFn) * 64,
+    bits((d >> 56n) & 0xFFn) * 128
   ];
 
   for (let i = 0, l = toAdd.length; i < l; i++)
-    sum = sum.add(toAdd[i]);
+    sum += toAdd[i];
 
-  return sum.low;
+  return sum;
 }
 
 /**

@@ -6,7 +6,7 @@
  * fuzzy comparisons.
  */
 
-import deburr from 'lodash/deburr.js';
+import deburr from '../helpers/deburr.js';
 import {
   SINGLE_QUOTES as SINGLE_QUOTES_CLASS,
   DOUBLE_QUOTES as DOUBLE_QUOTES_CLASS,
