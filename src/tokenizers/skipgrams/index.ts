@@ -6,7 +6,7 @@
  *
  * [Reference]: https://en.wikipedia.org/wiki/N-gram#Skip-gram
  */
-import {combinations} from 'obliterator';
+import {combinations} from '../../helpers/combinatorics.js';
 import {seq} from '../../helpers/index.js';
 import {vec} from '../../helpers/vectors.js';
 import ngrams from '../ngrams/index.js';

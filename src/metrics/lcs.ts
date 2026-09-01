@@ -6,7 +6,7 @@
  *
  * [Tags]: metric, string metric.
  */
-import {GeneralizedSuffixArray} from 'mnemonist';
+import {GeneralizedSuffixArray} from '../structures/suffix-array.js';
 
 /**
  * LCS similarity.

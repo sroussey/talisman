@@ -15,14 +15,22 @@ First release of `@sroussey/talisman`, a TypeScript fork of
   `exports` map (`@sroussey/talisman/metrics/levenshtein`, ...). Babel and the
   transpiled folders at the root of the package are gone; the build output
   lives in `dist`.
-* The runtime dependencies went from 6 to 4. `long` is gone: the Eudex hash
-  now uses native `BigInt`, so **`phonetics/eudex` returns a `bigint` instead
-  of a `Long`** (compare hashes with `===`, not `.equals()`). `lodash` is gone
-  too: `uniq` became a `Set`, `deburr` became a new `helpers/deburr` module
-  built on Unicode's canonical decomposition, and Lodash's `words` was
-  vendored into `tokenizers/words/naive` under its MIT licence. What remains
-  is `html-entities` (upgraded to v2), `mnemonist` (v0.40), `obliterator` and
-  `pandemonium`.
+* **`html-entities` is now the only runtime dependency**, down from six.
+  * `long` is gone: the Eudex hash uses native `BigInt`, so
+    **`phonetics/eudex` returns a `bigint` instead of a `Long`** (compare
+    hashes with `===`, not `.equals()`).
+  * `lodash` is gone: `uniq` became a `Set`, `deburr` became the new
+    `helpers/deburr` module built on Unicode's canonical decomposition, and
+    Lodash's `words` was vendored into `tokenizers/words/naive`.
+  * `mnemonist`, `obliterator` and `pandemonium` are gone: the pieces the
+    library used were vendored as `structures/heap`, `structures/vp-tree`,
+    `structures/suffix-array`, `helpers/combinatorics` and `helpers/random`.
+    They are ports rather than copies - typed, documented and covered by their
+    own tests - and each was checked against the package it came from before
+    the dependency was dropped.
+
+  Every vendored module keeps the copyright notice of the MIT-licensed project
+  it comes from, all of which are also authored by Talisman's own author.
 * `citation-js` is no longer a devDependency: it powers `bun run bib`, which
   regenerates a committed file by hand, and it accounted for 80 of the 96
   packages a `bun install` used to fetch (now 13). Install it on demand with

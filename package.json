@@ -123,10 +123,7 @@
   },
   "homepage": "https://github.com/sroussey/talisman#readme",
   "dependencies": {
-    "html-entities": "^2.6.0",
-    "mnemonist": "^0.40.4",
-    "obliterator": "^2.0.5",
-    "pandemonium": "^2.4.1"
+    "html-entities": "^2.6.0"
   },
   "devDependencies": {
     "@types/bun": "^1.4.0",

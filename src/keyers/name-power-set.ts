@@ -6,7 +6,7 @@
  * write the given name so that one can try to perform fuzzy matching on
  * partial names such as "P. Henry" & "Philip Henry", for instance.
  */
-import {powerSet} from 'obliterator';
+import {powerSet} from '../helpers/combinatorics.js';
 import words from '../tokenizers/words/index.js';
 
 // TODO: option for full initials? (else if solution involves only abbrev, we skip)

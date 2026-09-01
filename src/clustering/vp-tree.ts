@@ -5,7 +5,7 @@
  * Clustering method using a Vantage Point Tree (VPTree) to find the clusters
  * more efficiently.
  */
-import {VPTree} from 'mnemonist';
+import {VPTree} from '../structures/vp-tree.js';
 import RecordLinkageClusterer from './abstract.js';
 import type {ClustererParameters, DistanceFunction} from './abstract.js';
 

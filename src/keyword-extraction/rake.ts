@@ -13,7 +13,7 @@
  * The article use the term "degree" in a somewhat incorrect way. It's more
  * of the propension of a given word to find itself in a long keyword.
  */
-import {Heap} from 'mnemonist';
+import {Heap} from '../structures/heap.js';
 
 // TODO: mitigation strategy to implement
 // TODO: tokenizer option, stemmer option

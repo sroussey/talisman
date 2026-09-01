@@ -18,7 +18,7 @@
  *
  * [Tags]: string metric.
  */
-import {GeneralizedSuffixArray} from 'mnemonist';
+import {GeneralizedSuffixArray} from '../structures/suffix-array.js';
 
 /**
  * The kind of sequences the metric is able to handle.

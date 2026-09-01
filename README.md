@@ -52,7 +52,7 @@ An extensive bibliography of the methods & functions implemented by the library 
 * :zap: **Performant**: the library should be as performant as possible for a high-level programming language library.
 * :globe_with_meridians: **Cross-platform**: the library is cross-platform and can be used both with Node.js and in the browser.
 * :triangular_ruler: **Typed**: written in TypeScript, checked under `strict` mode, with declarations shipped for every module.
-* :feather: **Light**: four small runtime dependencies (`html-entities`, `mnemonist`, `obliterator`, `pandemonium`).
+* :feather: **Light**: a single runtime dependency (`html-entities`).
 
 ## How to cite
 

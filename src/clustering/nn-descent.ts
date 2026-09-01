@@ -15,8 +15,7 @@
 
 import RecordLinkageClusterer from './abstract.js';
 import type {ClustererParameters, DistanceFunction} from './abstract.js';
-import {createChoice} from 'pandemonium/choice.js';
-import {createGeometricReservoirSample} from 'pandemonium/geometric-reservoir-sample.js';
+import {createChoice, createGeometricReservoirSample} from '../helpers/random.js';
 
 /**
  * One of an item's current nearest neighbors.
@@ -140,8 +139,8 @@ export class NNDescentClusterer<T = unknown> extends RecordLinkageClusterer<T> {
     if (typeof this.rng !== 'function')
       throw new Error('talisman/clustering/record-linkage/nn-descent: rng should be a function.');
 
-    this.sampleFunction = createGeometricReservoirSample<T>(this.rng) as (k: number, array: T[]) => T[];
-    this.choiceFunction = createChoice<T>(this.rng);
+    this.sampleFunction = createGeometricReservoirSample(this.rng);
+    this.choiceFunction = createChoice(this.rng);
 
     // Checking k
     this.k = params.k;
