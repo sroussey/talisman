@@ -1,5 +1,37 @@
 # Changelog
 
+## 1.0.0
+
+First release of `@sroussey/talisman`, a TypeScript fork of
+[talisman](https://github.com/Yomguithereal/talisman) (last published as
+`talisman@1.1.4`). The version was reset to `1.0.0` for the renamed package.
+
+* The whole library was rewritten in **TypeScript**. Every module now ships
+  type declarations, and the sources typecheck under `strict` mode.
+* The toolchain moved to **Bun**: `bun test` replaces mocha, `bun install`
+  replaces npm and the benchmark runs through `bun run bench` instead of
+  matcha. `tsc` still emits the published JavaScript & declarations.
+* The package is now **ESM only** and exposes its modules through the
+  `exports` map (`@sroussey/talisman/metrics/levenshtein`, ...). Babel and the
+  transpiled folders at the root of the package are gone; the build output
+  lives in `dist`.
+* `html-entities` was upgraded to `v2`, `long` to `v5` and `mnemonist` to
+  `v0.40`.
+
+### Bug fixes surfaced by the type checker
+
+* `phonetics/double-metaphone`: three misplaced parentheses/typos made a
+  `substr` call swallow the operator it was meant to be compared with. The
+  `GET`, `-ALL-` and `WH-` branches now behave as the reference implementation
+  does. Words starting with `WH` followed by a consonant (`white`, `when`) now
+  emit their initial `A`.
+* `stemmers/uea-lite`: rule `11.2` was numbered with a number instead of a
+  string, and a `/vings$/` rule that the preceding `/vings?$/` rule always
+  shadowed was removed.
+* `tokenizers/sentences/punkt`: `FrequencyDistribution#add` never returned the
+  distribution its documentation promised; it is now documented as returning
+  nothing.
+
 ## 1.1.4
 
 * Fixing `phonetics/nysiis`.

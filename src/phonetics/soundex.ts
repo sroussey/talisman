@@ -1,0 +1,102 @@
+/**
+ * Talisman phonetics/soundex
+ * ===========================
+ *
+ * The Soundex algorithm.
+ *
+ * [Reference]: https://en.wikipedia.org/wiki/Soundex
+ *
+ * [Authors]:
+ * Robert C. Russel
+ * Margaret King Odell
+ */
+import {translation, squeeze} from '../helpers/index.js';
+import deburr from 'lodash/deburr.js';
+
+/**
+ * Translations.
+ */
+const TRANSLATIONS = translation(
+  'AEIOUYWHBPFVCSKGJQXZDTLMNR',
+  '000000DD111122222222334556'
+);
+
+const REFINED_TRANSLATIONS = translation(
+  'AEIOUYWHBPFVCKSGJQXZDTLMNR',
+  '000000DD112233344555667889'
+);
+
+/**
+ * Helpers.
+ */
+function pad(code: string): string {
+  return (code + '0000').slice(0, 4);
+}
+
+/**
+ * Function taking a single name and computing its Soundex code.
+ *
+ * @param name - The name to process.
+ * @return The Soundex code.
+ *
+ * @throws {Error} The function expects the name to be a string.
+ */
+export default function soundex(name: string): string {
+  if (typeof name !== 'string')
+    throw Error('talisman/phonetics/soundex: the given name is not a string.');
+
+  name = deburr(name)
+    .toUpperCase()
+    .replace(/[^A-Z]/g, '');
+
+  const firstLetter = name.charAt(0);
+
+  // Process the code for the name's tail
+  let tail = '';
+
+  for (let i = 1, l = name.length; i < l; i++) {
+    if (TRANSLATIONS[name[i]] !== 'D')
+      tail += TRANSLATIONS[name[i]];
+  }
+
+  // Dropping first code's letter if duplicate
+  if (tail.charAt(0) === TRANSLATIONS[firstLetter])
+    tail = tail.slice(1);
+
+  // Composing the code from the tail
+  const code = squeeze(tail).replace(/0/g, '');
+
+  return pad(firstLetter + code);
+}
+
+/**
+ * Function taking a single name and computing its refined Soundex code.
+ *
+ * @param name - The name to process.
+ * @return The refined Soundex code.
+ *
+ * @throws {Error} The function expects the name to be a string.
+ */
+export function refined(name: string): string {
+  if (typeof name !== 'string')
+    throw Error('talisman/phonetics/soundex#refined: the given name is not a string.');
+
+  name = deburr(name)
+    .toUpperCase()
+    .replace(/[^A-Z]/g, '');
+
+  const firstLetter = name.charAt(0);
+
+  // Process the code for the name's tail
+  let tail = '';
+
+  for (let i = 0, l = name.length; i < l; i++) {
+    if (REFINED_TRANSLATIONS[name[i]] !== 'D')
+      tail += REFINED_TRANSLATIONS[name[i]];
+  }
+
+  // Composing the code from the tail
+  const code = squeeze(tail);
+
+  return firstLetter + code;
+}

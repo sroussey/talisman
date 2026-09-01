@@ -1,23 +1,11 @@
 # Common
 node_modules
 experiments
-build
 *.log
-*.lock
 *.pl
 .DS_Store
 TODO.md
 
-# Transpiled modules
-/clustering
-/hash
-/helpers
-/inflectors
-/keyers
-/keyword-extraction
-/metrics
-/parsers
-/phonetics
-/regexp
-/stemmers
-/tokenizers
+# Build output
+dist
+*.tsbuildinfo
